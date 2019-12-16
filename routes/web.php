@@ -196,6 +196,7 @@ Route::get('schemes/data', 'SchemeController@getData');
 Route::get('locations/data', 'LocationController@getData');
 
 Route::get('customer-types/data', 'CustomerTypeController@getData');
+Route::get('product-types/data', 'ProductTypeController@getData');
 
 Route::get('customer-classes/data', 'CustomerClassController@getData');
 
@@ -300,6 +301,7 @@ Route::resource('schemes', 'SchemeController');
 Route::resource('locations', 'LocationController');
 
 Route::resource('customer-types', 'CustomerTypeController');
+Route::resource('product-types', 'ProductTypeController');
 
 Route::resource('customer-classes', 'CustomerClassController');
 

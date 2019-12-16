@@ -30,7 +30,7 @@ class CustomerTypeController extends Controller
      */
     public function getCustomerTypes()
     {
-        $customerTypes = CustomerType::select('name')->get();
+        $customerTypes = CustomerType::select('name','visitor_type_id')->get();
 
         return response()->json([
             'success' => true,

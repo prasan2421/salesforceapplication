@@ -3,7 +3,7 @@
 @endif
 
 <div class="form-group">
-  {{ Form::label('route_id', 'Route') }}
+  {{ Form::label('route_id', 'Beat') }}
   {{ Form::select('route_id', [], null, [ 'class' => 'form-control' . ($errors->has('route_id') ? ' is-invalid' : '') ])}}
   @if($errors->has('route_id'))
   <div class="invalid-feedback">
@@ -21,6 +21,8 @@
   </div>
   @endif
 </div>
+
+
 
 <div class="form-group">
   {{ Form::label('customer_class_id', 'Customer Class') }}

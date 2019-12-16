@@ -199,6 +199,8 @@ class CustomerController extends Controller
     public function show($id)
     {
         $query = Customer::query();
+//        $customer = Customer::find($id);
+//        dd( $customer->customerType->productType->name );
 
         if(request()->user()->role == 'sales-officer') {
             $routeIds = Route::where('division_id', request()->user()->division_id)->pluck('_id');

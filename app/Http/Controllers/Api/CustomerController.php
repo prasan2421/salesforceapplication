@@ -539,6 +539,7 @@ class CustomerController extends Controller
                 'route_name' => $customer->route ? $customer->route->name : '',
                 'customer_type_id' => $customer->customerType ? $customer->customerType->_id : '',
                 'customer_type_name' => $customer->customerType ? $customer->customerType->name : '',
+                'product_type_name' => $customer->customerType->productType ? $customer->customerType->productType->name : '',
                 'customer_class_id' => $customer->customerClass ? $customer->customerClass->_id : '',
                 'customer_class_name' => $customer->customerClass ? $customer->customerClass->name : '',
                 'sap_code' => $customer->sap_code,

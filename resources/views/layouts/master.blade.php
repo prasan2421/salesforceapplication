@@ -89,14 +89,14 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link has-dropdown"><i class="fas fa-layer-group"></i><span>Verticals</span></a>
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-clone"></i><span>Verticals</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ action('VerticalController@index') }}">List Verticals</a></li>
                 <li><a class="nav-link" href="{{ action('VerticalController@create') }}">Add Vertical</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link has-dropdown"><i class="fas fa-layer-group"></i><span>Brands</span></a>
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-cubes"></i><span>Brands</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ action('BrandController@index') }}">List Brands</a></li>
                 <li><a class="nav-link" href="{{ action('BrandController@create') }}">Add Brand</a></li>
@@ -140,12 +140,19 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link has-dropdown"><i class="fas fa-store-alt"></i><span>Customer Types</span></a>
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-grip-vertical"></i><span>Customer Types</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ action('CustomerTypeController@index') }}">List Customer Types</a></li>
                 <li><a class="nav-link" href="{{ action('CustomerTypeController@create') }}">Add Customer Type</a></li>
               </ul>
             </li>
+              <li class="dropdown">
+                  <a href="#" class="nav-link has-dropdown"><i class="fas fa-rainbow"></i><span>Product Types</span></a>
+                  <ul class="dropdown-menu">
+                      <li><a class="nav-link" href="{{ action('ProductTypeController@index') }}">List Product Types</a></li>
+                      <li><a class="nav-link" href="{{ action('ProductTypeController@create') }}">Add Product Type</a></li>
+                  </ul>
+              </li>
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-store-alt"></i><span>Customer Classes</span></a>
               <ul class="dropdown-menu">
@@ -185,14 +192,14 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Sales Officers</span></a>
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-receipt"></i><span>Sales Officers</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ action('SalesOfficerController@index') }}">List Sales Officers</a></li>
                 <li><a class="nav-link" href="{{ action('SalesOfficerController@create') }}">Add Sales Officer</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i><span>Admins</span></a>
+              <a href="#" class="nav-link has-dropdown"><i class="fas fa-user-friends"></i><span>Admins</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="{{ action('AdminController@index') }}">List Admins</a></li>
                 <li><a class="nav-link" href="{{ action('AdminController@create') }}">Add Admin</a></li>

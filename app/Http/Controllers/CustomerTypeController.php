@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\CustomerType;
+use App\ProductType;
 
 use Form;
-
+use DB;
 use App\Helpers\Common;
 
 use App\Helpers\DataTableHelper;
@@ -38,17 +39,74 @@ class CustomerTypeController extends Controller
     }
 
     public function getData() {
-        $data = CustomerType::select('id', 'name', 'created_at', 'updated_at');
 
-        return DataTableHelper::of($data)
+        $data = CustomerType::select('id', 'name', 'product_type_id','created_at', 'updated_at');
+
+        $pipeline = [
+            [
+                '$addFields' => [
+                    'product_type_id' => [
+                        '$toObjectId' => '$product_type_id'
+                    ],
+                    'created_at' => [
+                        '$dateToString' => [
+                            'date' => '$created_at',
+                            'format' => '%Y-%m-%d %H:%M:%S',
+//                            'timezone' => config('app.timezone')
+                        ]
+                    ],
+                    'updated_at' => [
+                        '$dateToString' => [
+                            'date' => '$updated_at',
+                            'format' => '%Y-%m-%d %H:%M:%S',
+//                            'timezone' => config('app.timezone')
+                        ]
+                    ]
+                ]
+            ],
+            [
+                '$lookup' => [
+                    'from' => 'product_types',
+                    'localField' => 'product_type_id',
+                    'foreignField' => '_id',
+                    'as' => 'info'
+                ]
+            ],
+            [
+                '$unwind' => [
+                    'path' => '$info',
+                    'preserveNullAndEmptyArrays' => true
+                ]
+            ],
+            [
+                '$project' => [
+                    '_id' => 1,
+                    'name' => 1,
+                    'created_at' => 1,
+                    'updated_at' => 1,
+                    'visitor_type' => [
+                        '$ifNull' => [ '$info.name', '' ]
+                    ],
+                     'product_id' => [
+
+            '$ifNull' => [ '$info._id', '' ]
+        ]
+
+                ]
+            ]
+
+        ];
+
+
+        return DataTableHelper::aggregate('customer_types',$pipeline)
                 ->addColumn('action', function($model) {
                     $content = '<div class="buttons">';
 
-                    $content .= '<a href="' . action('CustomerTypeController@show', $model->id) . '" class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title="View"><i class="fas fa-eye"></i></a>';
+                    $content .= '<a href="' . action('CustomerTypeController@show', $model->_id) . '" class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title="View"><i class="fas fa-eye"></i></a>';
 
-                    $content .= '<a href="' . action('CustomerTypeController@edit', $model->id) . '" class="btn btn-icon btn-warning" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>';
+                    $content .= '<a href="' . action('CustomerTypeController@edit', $model->_id) . '" class="btn btn-icon btn-warning" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>';
 
-                    $content .= Form::open(['action' => ['CustomerTypeController@destroy', $model->id], 'method' => 'DELETE', 'style' => 'display: inline;']);
+                    $content .= Form::open(['action' => ['CustomerTypeController@destroy', $model->_id], 'method' => 'DELETE', 'style' => 'display: inline;']);
                     $content .= '<button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title="Delete" type="submit" onclick="return confirm(\'Are you sure you want to delete?\')"><i class="fas fa-trash-alt"></i></button>';
                     $content .= Form::close();
 
@@ -66,7 +124,9 @@ class CustomerTypeController extends Controller
      */
     public function create()
     {
-        return view('customer-types.create');
+        $productTypes = ProductType::pluck('name', '_id');
+        return view('customer-types.create', [
+             'productTypes' => $productTypes,]);
     }
 
     /**
@@ -83,6 +143,7 @@ class CustomerTypeController extends Controller
 
         $customerType = new CustomerType;
         $customerType->name = Common::nullIfEmpty($request->name);
+        $customerType->product_type_id = Common::nullIfEmpty($request->product_type_id);
         $customerType->save();
 
         return redirect()
@@ -98,10 +159,15 @@ class CustomerTypeController extends Controller
      */
     public function show($id)
     {
-        $customerType = CustomerType::findOrFail($id);
+        $customerType = CustomerType::select('id', 'name', 'product_type_id')
+            ->with('productType')
+            ->findOrFail($id);
 
+//        $customerType = CustomerType::findOrFail($id);
+//        $productType = ProductType::whereIn('name', '_id');
         return view('customer-types.show', [
-            'customerType' => $customerType
+            'customerType' => $customerType,
+//            'productType' => $productType,
         ]);
     }
 
@@ -114,9 +180,12 @@ class CustomerTypeController extends Controller
     public function edit($id)
     {
         $customerType = CustomerType::findOrFail($id);
+        $productTypes = ProductType::pluck('name', '_id');
+
 
         return view('customer-types.edit', [
-            'customerType' => $customerType
+            'customerType' => $customerType,
+            'productTypes' => $productTypes,
         ]);
     }
 
@@ -136,6 +205,7 @@ class CustomerTypeController extends Controller
         ]);
 
         $customerType->name = Common::nullIfEmpty($request->name);
+        $customerType->product_type_id = Common::nullIfEmpty($request->product_type_id);
         $customerType->save();
 
         return redirect()

@@ -123,6 +123,8 @@ Route::get('performances/total-achievements', 'Api\PerformanceController@getTota
 
 Route::post('feedbacks', 'Api\FeedbackController@addFeedback');
 
+Route::post('remarks', 'Api\RemarksController@addRemarks');
+
 Route::get('states', 'Api\StateController@getStates');
 
 Route::post('error-logs', 'Api\ErrorLogController@addErrorLog');
